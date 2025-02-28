@@ -1,0 +1,19 @@
+version: "3.8"
+services:
+  db:
+    image: postgres:12.18
+    restart: always
+    environment:
+      PGUSER: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: avocado
+    healthcheck:
+      test: "pg_isready -h db"
+      interval: 1s
+      timeout: 5s
+      retries: 10
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./otsc_rca:/var/lib/postgresql/data
+      - ./test/init.sql:/docker-entrypoint-initdb.d/init.sql
